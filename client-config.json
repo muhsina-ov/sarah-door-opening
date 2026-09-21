@@ -2,8 +2,8 @@
   "doorStyleId": "sarah-door",
   "theme": "royal-mughal-gold",
   "couple": {
-    "bride": "Sarah Samia",
-    "groom": "Shadaat Hanif"
+    "bride": "Sarah",
+    "groom": "Shadaat"
   },
   "headerInvocation": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
   "headerInvocationSubtitle": "In the Name of Allah, the Most Gracious, the Most Merciful",
@@ -19,7 +19,7 @@
     "venueName": "Safed Baradari",
     "locationAddress": "Qaisar Bagh, Lucknow, Uttar Pradesh 226001",
     "mapsUrl": "https://maps.app.goo.gl/U6xvzYyqiAwADAVKA?g_st=ic",
-    "dressCode": "Royal Traditional (Gold & White)"
+    "dressCode": "Royal Traditional"
   },
   "itinerary": [
     {
@@ -43,7 +43,6 @@
     "reference": "— Surah Ar-Rum [30:21]"
   },
   "media": {
-    "youtubeUrl": "https://www.youtube.com/watch?v=kYJjZ3L1Y9A",
-    "trackTitle": "Jashn-E-Bahaaraa (Official Flute & Sitar Instrumental — Jodhaa Akbar)"
+    "trackTitle": "30-second looped instrumental (assets/audio/bgm_30s.mp3)"
   }
 }

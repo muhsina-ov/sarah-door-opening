@@ -3,28 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-  <title>Sarah Samia &amp; Shadaat Hanif | Wedding Invitation — Safed Baradari, Lucknow</title>
-  <meta name="description" content="Together with their families, Sarah Samia &amp; Shadaat Hanif invite you to celebrate their wedding on Monday, 30th November 2026 at Safed Baradari, Lucknow.">
+  <title>Sarah &amp; Shadaat | Wedding Invitation — Safed Baradari, Lucknow</title>
+  <meta name="description" content="Together with their families, Sarah &amp; Shadaat invite you to celebrate their wedding on Monday, 30th November 2026 at Safed Baradari, Lucknow.">
   <link rel="canonical" href="https://sarah-and-shadaat.invitingyou.top/">
 
   <!-- Open Graph / WhatsApp / Facebook / LinkedIn / iMessage -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://sarah-and-shadaat.invitingyou.top/">
   <meta property="og:site_name" content="Sarah &amp; Shadaat Wedding Invitation">
-  <meta property="og:title" content="Sarah Samia &amp; Shadaat Hanif | Royal Wedding Invitation">
-  <meta property="og:description" content="Together with their families, Sarah Samia &amp; Shadaat Hanif invite you to celebrate their wedding on Monday, 30th November 2026 at Safed Baradari, Lucknow.">
+  <meta property="og:title" content="Sarah &amp; Shadaat | Royal Wedding Invitation">
+  <meta property="og:description" content="Together with their families, Sarah &amp; Shadaat invite you to celebrate their wedding on Monday, 30th November 2026 at Safed Baradari, Lucknow.">
   <meta property="og:image" content="https://sarah-and-shadaat.invitingyou.top/assets/images/og-image.jpg">
   <meta property="og:image:secure_url" content="https://sarah-and-shadaat.invitingyou.top/assets/images/og-image.jpg">
   <meta property="og:image:type" content="image/jpeg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Royal Wedding Invitation of Sarah Samia &amp; Shadaat Hanif at Safed Baradari, Lucknow">
+  <meta property="og:image:alt" content="Royal Wedding Invitation of Sarah &amp; Shadaat at Safed Baradari, Lucknow">
 
   <!-- Twitter / X Cards -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://sarah-and-shadaat.invitingyou.top/">
-  <meta name="twitter:title" content="Sarah Samia &amp; Shadaat Hanif | Royal Wedding Invitation">
-  <meta name="twitter:description" content="Together with their families, Sarah Samia &amp; Shadaat Hanif invite you to celebrate their wedding on Monday, 30th November 2026 at Safed Baradari, Lucknow.">
+  <meta name="twitter:title" content="Sarah &amp; Shadaat | Royal Wedding Invitation">
+  <meta name="twitter:description" content="Together with their families, Sarah &amp; Shadaat invite you to celebrate their wedding on Monday, 30th November 2026 at Safed Baradari, Lucknow.">
   <meta name="twitter:image" content="https://sarah-and-shadaat.invitingyou.top/assets/images/og-image.jpg">
 
   <!-- Mobile Theme & Web App Meta -->
@@ -39,12 +39,11 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&amp;family=Cinzel+Decorative:wght@400;600;700;900&amp;family=Cinzel:wght@400;500;600;700;800&amp;family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&amp;family=Montserrat:wght@200;300;400;500;600;700&amp;display=swap" rel="stylesheet">
   
   <!-- Performance Preload & Resource Hints -->
-  <link rel="preload" as="image" href="./assets/doors/1.png" fetchpriority="high">
+  <link rel="preload" as="image" href="./assets/doors/1.jpg" fetchpriority="high">
   <link rel="preload" as="image" href="./assets/doors/safed-baradari-hall.jpg">
   <link rel="preload" as="video" href="./assets/doors/1.mp4" type="video/mp4">
   
-  <!-- YouTube Iframe API for background music playback -->
-  <script src="https://www.youtube.com/iframe_api"></script>
+  <!-- 30-second background music only (single audio source) -->
   <script type="module" src="./main.js"></script>
   <link rel="stylesheet" href="./style.css">
 </head>
@@ -52,8 +51,7 @@
   <!-- Ambient Desktop Background -->
   <div class="ambient-backdrop" id="ambientBackdrop"></div>
 
-  <!-- Background YouTube Music Player Container & Local Audio Element -->
-  <div id="youtubePlayerContainer" class="youtube-player-container" data-youtube-url="https://www.youtube.com/watch?v=kYJjZ3L1Y9A"></div>
+  <!-- Background Music: single 30-second looped track -->
   <audio id="localBgmAudio" src="./assets/audio/bgm_30s.mp3" loop preload="auto"></audio>
 
   <!-- Top Floating Controls -->
@@ -84,7 +82,7 @@
         </video>
 
         <!-- Ornate Mughal Double Door Cover (Sarah's Selected Door) -->
-        <img id="doorPoster" src="./assets/doors/1.png" alt="Royal Mughal Architectural Door" class="door-media poster-image active" decoding="async" fetchpriority="high">
+        <img id="doorPoster" src="./assets/doors/1.jpg" alt="Royal Mughal Architectural Door" class="door-media poster-image active" decoding="async" fetchpriority="high">
         
         <!-- Freeze Frame Canvas for static hold at video completion -->
         <canvas id="staticFrameCanvas" class="door-media static-canvas"></canvas>
@@ -130,13 +128,13 @@
           <!-- Families & Greeting -->
           <p class="greeting-text animate-element" style="--delay: 0.2s;" id="displayGreeting">TOGETHER WITH THEIR FAMILIES</p>
 
-          <!-- Bride & Groom Names (Sarah requested bride's name first) -->
+          <!-- Bride & Groom Names (first names only) -->
           <div class="couple-names-block animate-element" style="--delay: 0.35s;">
-            <h1 class="bride-name" id="displayBride">Sarah Samia</h1>
+            <h1 class="bride-name" id="displayBride">Sarah</h1>
             <div class="ampersand-wrapper">
               <span class="ampersand">&amp;</span>
             </div>
-            <h1 class="groom-name" id="displayGroom">Shadaat Hanif</h1>
+            <h1 class="groom-name" id="displayGroom">Shadaat</h1>
           </div>
 
           <!-- Announcement -->
@@ -146,9 +144,9 @@
 
           <div class="gold-separator animate-element" style="--delay: 0.6s;"></div>
 
-          <!-- Interactive Scratch-to-Reveal Date Card -->
+          <!-- Tap-to-Reveal Date Card -->
           <div class="scratch-card-wrapper animate-element" style="--delay: 0.7s;">
-            <div class="scratch-card-container" id="scratchContainer">
+            <div class="scratch-card-container tap-reveal-container" id="dateRevealContainer" role="button" tabindex="0" aria-label="Tap to reveal wedding date">
               <!-- Underneath Date Card -->
               <div class="date-time-card" id="dateTimeCard">
                 <div class="date-day" id="displayDay">MONDAY</div>
@@ -159,20 +157,14 @@
                 </div>
                 <div class="date-time" id="displayTime">8:00 PM ONWARDS</div>
               </div>
-              
-              <!-- Gold Scratch Foil Canvas -->
-              <canvas id="scratchCanvas" class="scratch-canvas"></canvas>
-              
-              <!-- Scratch Hint Badge -->
-              <div class="scratch-hint-badge" id="scratchHint">
-                <span class="sparkle-icon">✨</span>
-                <span>Scratch foil to reveal date</span>
+
+              <!-- Tap Cover Overlay -->
+              <div class="tap-reveal-cover" id="dateRevealCover">
+                <span class="tap-reveal-icon">✦</span>
+                <span class="tap-reveal-title">TAP TO REVEAL</span>
+                <span class="tap-reveal-sub">WEDDING DATE</span>
               </div>
             </div>
-
-            <button id="quickRevealBtn" class="quick-reveal-btn">
-              <span>Quick Reveal Date ✨</span>
-            </button>
           </div>
 
           <!-- Live Countdown Row -->
@@ -249,7 +241,7 @@
           <!-- Dress Code Badge -->
           <div class="dress-code-badge animate-element" style="--delay: 1.15s;">
             <span class="badge-icon">👑</span>
-            <span id="displayDressCode">Royal Traditional (Gold &amp; White)</span>
+            <span id="displayDressCode">Royal Traditional</span>
           </div>
 
           <!-- Action Buttons Grid -->

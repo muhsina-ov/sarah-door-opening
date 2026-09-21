@@ -136,14 +136,51 @@
   line-height: 1.6 !important;
 }
 
-/* Cleaner scratch card without double badge */
-.scratch-hint-badge {
-  display: none !important;
-}
-
-.scratch-card-container {
+/* Tap-to-reveal date card (replaces scratch foil) */
+.tap-reveal-container {
   border: 1px solid rgba(229, 193, 88, 0.4) !important;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7), 0 0 20px rgba(229, 193, 88, 0.15) !important;
+  cursor: pointer;
+}
+
+.tap-reveal-cover {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 18px;
+  background: linear-gradient(135deg, #E5C158 0%, #FFF4D0 30%, #D4A338 60%, #996C18 100%);
+  color: #21180A;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+.tap-reveal-icon {
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.tap-reveal-title {
+  font-family: var(--font-serif);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+}
+
+.tap-reveal-sub {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  letter-spacing: 1.5px;
+  opacity: 0.75;
+}
+
+.tap-reveal-container.revealed .tap-reveal-cover {
+  opacity: 0;
+  transform: scale(1.04);
+  pointer-events: none;
 }
 
 /* Regal Countdown Pills */
@@ -224,15 +261,4 @@
   text-shadow: 0 0 8px rgba(229, 193, 88, 0.8) !important;
 }
 
-/* Reliable Background Audio Container */
-.youtube-player-container {
-  position: fixed !important;
-  bottom: 0 !important;
-  right: 0 !important;
-  width: 200px !important;
-  height: 200px !important;
-  opacity: 0.001 !important;
-  pointer-events: none !important;
-  z-index: -100 !important;
-  overflow: hidden !important;
-}
+

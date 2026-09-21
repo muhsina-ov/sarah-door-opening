@@ -1,15 +1,17 @@
 /* ==========================================================================
-   SARAH SAMIA & SHADAAT HANIF — WEDDING INVITATION INTERACTION ENGINE
+   SARAH & SHADAAT — WEDDING INVITATION INTERACTION ENGINE
    Venue: Safed Baradari, Lucknow | Date: 30 November 2026
+   Audio: single 30-second looped track (assets/audio/bgm_30s.mp3)
    ========================================================================== */
 
 // --- Global State ---
 let isPlaying = false;
 let hasOpened = false;
 let isAudioMuted = false;
-let ytPlayer = null;
-let audioCtx = null;
-let synthInterval = null;
+// Extra 2.5s hold on the open venue before invitation content reveals,
+// so the venue stays on screen a little longer after the gate opens.
+const VENUE_HOLD_MS = 2500;
+let venueHoldTimer = null;
 
 // Target Wedding Date: November 30, 2026, 8:00 PM IST (UTC+05:30)
 const WEDDING_TARGET_DATE = new Date('2026-11-30T20:00:00+05:30').getTime();
@@ -31,140 +33,35 @@ const openMapBtn = document.getElementById('openMapBtn');
 const closeMapModal = document.getElementById('closeMapModal');
 const mapModal = document.getElementById('mapModal');
 const addToCalendarBtn = document.getElementById('addToCalendarBtn');
-const quickRevealBtn = document.getElementById('quickRevealBtn');
-const scratchCanvas = document.getElementById('scratchCanvas');
-const scratchHint = document.getElementById('scratchHint');
+const dateRevealContainer = document.getElementById('dateRevealContainer');
+const dateRevealCover = document.getElementById('dateRevealCover');
 const confettiCanvas = document.getElementById('confettiCanvas');
 const lanternsContainer = document.getElementById('lanternsContainer');
 
 // ==========================================================================
-// 1. YouTube & Web Audio Background Music
+// 1. Background Music — single 30-second looped track only
 // ==========================================================================
-window.onYouTubeIframeAPIReady = function() {
-  const container = document.getElementById('youtubePlayerContainer');
-  if (!container) return;
-  
-  // Extract video id from container or fallback to royal instrumental
-  let videoId = 'kYJjZ3L1Y9A'; // Jashn-E-Bahaaraa Official Flute Instrumental (A.R. Rahman)
-  const url = container.getAttribute('data-youtube-url');
-  if (url) {
-    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
-    if (match && match[1]) videoId = match[1];
-  }
-
-  try {
-    ytPlayer = new YT.Player('youtubePlayerContainer', {
-      videoId: videoId,
-      playerVars: {
-        autoplay: 0,
-        controls: 0,
-        disablekb: 1,
-        fs: 0,
-        loop: 1,
-        playlist: videoId,
-        modestbranding: 1,
-        rel: 0,
-        playsinline: 1
-      },
-      events: {
-        onReady: (event) => {
-          if (!isAudioMuted) event.target.setVolume(75);
-        },
-        onError: () => {
-          console.log('[Audio] YouTube playback notice; will use royal synthesizer fallback on tap.');
-        }
-      }
-    });
-  } catch(e) {
-    console.warn('[Audio] YT Player init exception:', e);
-  }
-};
-
 function startAudioPlayback() {
   if (isAudioMuted) return;
 
-  // 1. Play local 30s cut of Jashn-E-Bahaaraa on continuous loop
+  // Play local 30s cut on continuous loop (only audio source in the project)
   if (localBgmAudio) {
     localBgmAudio.volume = 0.85;
     localBgmAudio.loop = true;
     const playPromise = localBgmAudio.play();
     if (playPromise !== undefined) {
       playPromise.then(() => {
-        console.log('[Audio] Playing local 30-second Jashn-E-Bahaaraa looped soundtrack.');
+        console.log('[Audio] Playing 30-second looped soundtrack.');
       }).catch(err => {
-        console.warn('[Audio] Local audio play error, trying YouTube/synth fallback:', err);
-        fallbackToYouTubeOrSynth();
+        console.warn('[Audio] Autoplay blocked, will retry on next tap:', err);
       });
-      return;
     }
-  }
-
-  fallbackToYouTubeOrSynth();
-}
-
-function fallbackToYouTubeOrSynth() {
-  let ytStarted = false;
-  if (ytPlayer && typeof ytPlayer.playVideo === 'function') {
-    try {
-      ytPlayer.unMute();
-      ytPlayer.setVolume(75);
-      ytPlayer.playVideo();
-      ytStarted = true;
-    } catch(e) {}
-  }
-  if (!ytStarted) {
-    playRoyalAmbientSynth();
   }
 }
 
 function stopAudioPlayback() {
   if (localBgmAudio) {
     try { localBgmAudio.pause(); } catch(e) {}
-  }
-  if (ytPlayer && typeof ytPlayer.pauseVideo === 'function') {
-    try { ytPlayer.pauseVideo(); } catch(e) {}
-  }
-  if (synthInterval) {
-    clearInterval(synthInterval);
-    synthInterval = null;
-  }
-}
-
-function playRoyalAmbientSynth() {
-  try {
-    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-    if (!AudioContextClass) return;
-    if (!audioCtx) audioCtx = new AudioContextClass();
-    if (audioCtx.state === 'suspended') audioCtx.resume();
-
-    // Royal Indian Raag Bhimpalasi / Yaman frequencies (Sitar / Tanpura chords)
-    const notes = [220, 261.63, 293.66, 329.63, 392.00, 440, 523.25];
-    let noteIndex = 0;
-
-    const playChime = () => {
-      if (isAudioMuted || !audioCtx) return;
-      const osc = audioCtx.createOscillator();
-      const gain = audioCtx.createGain();
-
-      osc.type = 'triangle';
-      osc.frequency.setValueAtTime(notes[noteIndex % notes.length], audioCtx.currentTime);
-      noteIndex++;
-
-      gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.08, audioCtx.currentTime + 0.3);
-      gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 3.0);
-
-      osc.connect(gain);
-      gain.connect(audioCtx.destination);
-
-      osc.start();
-      osc.stop(audioCtx.currentTime + 3.0);
-    };
-
-    playChime();
-    synthInterval = setInterval(playChime, 1400);
-  } catch(e) {
-    console.warn('Synth note error:', e);
   }
 }
 
@@ -244,15 +141,23 @@ function openDoorInvitation(e) {
   }
 }
 
-// Graceful fallback transition
+// Graceful fallback transition (includes venue hold so hall stays visible)
 function triggerImageTransition() {
   if (doorPoster) {
     doorPoster.classList.add('fade-out');
   }
   launchFloatingLanterns();
-  setTimeout(() => {
+  scheduleRevealWithVenueHold();
+}
+
+// Hold the open venue on screen for ~2.5s before showing invitation content
+function scheduleRevealWithVenueHold() {
+  if (hasOpened) return;
+  if (venueHoldTimer) clearTimeout(venueHoldTimer);
+  freezeFinalFrame();
+  venueHoldTimer = setTimeout(() => {
     revealInvitationContent();
-  }, 1800);
+  }, VENUE_HOLD_MS);
 }
 
 // Attach persistent listeners to doorVideo for timing and completion
@@ -263,7 +168,9 @@ if (doorVideo) {
     if (doorVideo.currentTime >= Math.max(1, dur - 2.5)) {
       launchFloatingLanterns();
     }
-    if (!hasOpened && doorVideo.currentTime >= Math.max(2, dur - 0.6)) {
+    // Reveal invitation 1 second before the video ends, so content
+    // starts fading in while the open venue is still on screen.
+    if (!hasOpened && doorVideo.currentTime >= Math.max(2, dur - 1.0)) {
       revealInvitationContent();
     }
   });
@@ -347,125 +254,33 @@ if (contentScrollable) {
 }
 
 // ==========================================================================
-// 3. Scratch Card Canvas (Gold Foil Reveal)
+// 3. Tap-to-Reveal Date Card (no scratch)
 // ==========================================================================
 function initScratchCard() {
-  if (!scratchCanvas) return;
-  const ctx = scratchCanvas.getContext('2d', { willReadFrequently: true });
-  if (!ctx) return;
+  initTapReveal();
+}
 
-  const rect = scratchCanvas.getBoundingClientRect();
-  const width = scratchCanvas.width = rect.width || 340;
-  const height = scratchCanvas.height = rect.height || 140;
+function initTapReveal() {
+  const container = dateRevealContainer || document.getElementById('dateRevealContainer');
+  const cover = dateRevealCover || document.getElementById('dateRevealCover');
+  if (!container || !cover) return;
 
-  // Draw shimmering gold foil pattern
-  const grad = ctx.createLinearGradient(0, 0, width, height);
-  grad.addColorStop(0, '#E5C158');
-  grad.addColorStop(0.3, '#FFF4D0');
-  grad.addColorStop(0.6, '#D4A338');
-  grad.addColorStop(1, '#996C18');
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, width, height);
+  // Date starts hidden behind the tap cover
+  container.classList.remove('revealed');
 
-  // Subtle metallic texture noise / sparkles
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.18)';
-  for (let i = 0; i < 400; i++) {
-    const rx = Math.random() * width;
-    const ry = Math.random() * height;
-    ctx.fillRect(rx, ry, 2, 2);
-  }
-
-  // Elegant royal seal in center
-  ctx.fillStyle = '#21180A';
-  ctx.font = '600 12px Cinzel, serif';
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.letterSpacing = '3px';
-  ctx.fillText('✦ SCRATCH TO REVEAL ✦', width / 2, height / 2 - 8);
-  ctx.font = '500 9px Montserrat, sans-serif';
-  ctx.fillStyle = '#4A3B1C';
-  ctx.letterSpacing = '1.5px';
-  ctx.fillText('SWIPE TO UNVEIL WEDDING DATE', width / 2, height / 2 + 12);
-
-  let isScratching = false;
-  let scratchedPixels = 0;
-  const totalPixels = width * height;
-
-  function scratch(x, y) {
-    ctx.globalCompositeOperation = 'destination-out';
-    ctx.beginPath();
-    ctx.arc(x, y, 22, 0, Math.PI * 2, false);
-    ctx.fill();
-
-    if (scratchHint) scratchHint.style.opacity = '0';
-
-    checkScratchProgress();
-  }
-
-  function getCoords(e) {
-    const r = scratchCanvas.getBoundingClientRect();
-    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-    return {
-      x: clientX - r.left,
-      y: clientY - r.top
-    };
-  }
-
-  scratchCanvas.addEventListener('mousedown', (e) => {
-    isScratching = true;
-    const { x, y } = getCoords(e);
-    scratch(x, y);
-  });
-
-  window.addEventListener('mousemove', (e) => {
-    if (!isScratching) return;
-    const { x, y } = getCoords(e);
-    scratch(x, y);
-  });
-
-  window.addEventListener('mouseup', () => { isScratching = false; });
-
-  scratchCanvas.addEventListener('touchstart', (e) => {
-    isScratching = true;
-    const { x, y } = getCoords(e);
-    scratch(x, y);
-  }, { passive: true });
-
-  scratchCanvas.addEventListener('touchmove', (e) => {
-    if (!isScratching) return;
-    const { x, y } = getCoords(e);
-    scratch(x, y);
-  }, { passive: true });
-
-  scratchCanvas.addEventListener('touchend', () => { isScratching = false; });
-
-  function checkScratchProgress() {
-    scratchedPixels++;
-    if (scratchedPixels % 12 === 0) {
-      try {
-        const imgData = ctx.getImageData(0, 0, width, height);
-        let clearCount = 0;
-        for (let i = 3; i < imgData.data.length; i += 16) {
-          if (imgData.data[i] === 0) clearCount++;
-        }
-        const pct = clearCount / (imgData.data.length / 16);
-        if (pct > 0.38) {
-          revealScratchCardFull();
-        }
-      } catch(e) {}
+  const reveal = (e) => {
+    if (e) {
+      e.stopPropagation();
+      e.preventDefault();
     }
-  }
+    container.classList.add('revealed');
+  };
 
-  function revealScratchCardFull() {
-    scratchCanvas.classList.add('fade-out');
-    if (scratchHint) scratchHint.style.display = 'none';
-    if (quickRevealBtn) quickRevealBtn.style.display = 'none';
-  }
-
-  if (quickRevealBtn) {
-    quickRevealBtn.addEventListener('click', revealScratchCardFull);
-  }
+  container.addEventListener('click', reveal);
+  container.addEventListener('touchend', reveal, { passive: false });
+  container.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') reveal(e);
+  });
 }
 
 // ==========================================================================
@@ -584,9 +399,9 @@ if (mapModal) {
 
 if (addToCalendarBtn) {
   addToCalendarBtn.addEventListener('click', () => {
-    const title = 'Sarah Samia & Shadaat Hanif Wedding';
+    const title = 'Sarah & Shadaat Wedding';
     const location = 'Safed Baradari, Qaisar Bagh, Lucknow, Uttar Pradesh';
-    const description = 'Wedding celebration of Sarah Samia & Shadaat Hanif at Safed Baradari, Lucknow. 8:00 PM onwards.';
+    const description = 'Wedding celebration of Sarah & Shadaat at Safed Baradari, Lucknow. 8:00 PM onwards.';
     
     // Google Calendar URL
     const gCalUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(title)}&dates=20261130T143000Z/20261130T183000Z&details=${encodeURIComponent(description)}&location=${encodeURIComponent(location)}`;
@@ -632,6 +447,10 @@ if (replayBtn) {
   replayBtn.addEventListener('click', () => {
     isPlaying = false;
     hasOpened = false;
+    if (venueHoldTimer) {
+      clearTimeout(venueHoldTimer);
+      venueHoldTimer = null;
+    }
 
     if (doorPoster) doorPoster.classList.remove('fade-out');
     if (staticCanvas) staticCanvas.classList.remove('active');
@@ -646,6 +465,8 @@ if (replayBtn) {
     }
     if (tapOverlay) tapOverlay.classList.remove('fade-out');
     if (contentScrollable) contentScrollable.scrollTop = 0;
+    const dateContainer = dateRevealContainer || document.getElementById('dateRevealContainer');
+    if (dateContainer) dateContainer.classList.remove('revealed');
 
     if (localBgmAudio) {
       localBgmAudio.currentTime = 0;
