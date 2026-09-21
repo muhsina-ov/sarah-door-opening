@@ -164,7 +164,7 @@ function scheduleRevealWithVenueHold() {
 if (doorVideo) {
   doorVideo.addEventListener('timeupdate', () => {
     if (!isPlaying) return;
-    const dur = doorVideo.duration || 6.0;
+    const dur = doorVideo.duration || 7.0;
     if (doorVideo.currentTime >= Math.max(1, dur - 2.5)) {
       launchFloatingLanterns();
     }
