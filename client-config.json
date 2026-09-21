@@ -1,0 +1,49 @@
+{
+  "doorStyleId": "sarah-door",
+  "theme": "royal-mughal-gold",
+  "couple": {
+    "bride": "Sarah Samia",
+    "groom": "Shadaat Hanif"
+  },
+  "headerInvocation": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ",
+  "headerInvocationSubtitle": "In the Name of Allah, the Most Gracious, the Most Merciful",
+  "greetingSubtitle": "TOGETHER WITH THEIR FAMILIES",
+  "tagline": "REQUEST THE HONOUR OF YOUR PRESENCE AT THE CELEBRATION OF THEIR WEDDING",
+  "event": {
+    "dateNum": "30",
+    "month": "NOVEMBER",
+    "year": "2026",
+    "dayOfWeek": "MONDAY",
+    "time": "8:00 PM ONWARDS",
+    "isoDate": "2026-11-30T20:00:00+05:30",
+    "venueName": "Safed Baradari",
+    "locationAddress": "Qaisar Bagh, Lucknow, Uttar Pradesh 226001",
+    "mapsUrl": "https://maps.app.goo.gl/U6xvzYyqiAwADAVKA?g_st=ic",
+    "dressCode": "Royal Traditional (Gold & White)"
+  },
+  "itinerary": [
+    {
+      "time": "8:00 PM",
+      "title": "Baraat & Istiqbaal",
+      "desc": "Grand welcome of the Baraat & reception"
+    },
+    {
+      "time": "9:00 PM",
+      "title": "Nikah Ceremony",
+      "desc": "Sacred vows & auspicious prayers"
+    },
+    {
+      "time": "10:00 PM",
+      "title": "Royal Dastarkhwan",
+      "desc": "Traditional Awadhi banquet & celebratory dinner"
+    }
+  ],
+  "verse": {
+    "text": "“And among His signs is that He created for you mates from among yourselves, that you may dwell in peace and tranquility with them, and He has put love and mercy between your hearts.”",
+    "reference": "— Surah Ar-Rum [30:21]"
+  },
+  "media": {
+    "youtubeUrl": "https://www.youtube.com/watch?v=kYJjZ3L1Y9A",
+    "trackTitle": "Jashn-E-Bahaaraa (Official Flute & Sitar Instrumental — Jodhaa Akbar)"
+  }
+}

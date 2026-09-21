@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Sarah Samia &amp; Shadaat Hanif | Wedding Invitation — Safed Baradari, Lucknow</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&amp;family=Cinzel+Decorative:wght@400;600;700;900&amp;family=Cinzel:wght@400;500;600;700;800&amp;family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&amp;family=Montserrat:wght@200;300;400;500;600;700&amp;display=swap" rel="stylesheet">
+  
+  <!-- Performance Preload & Resource Hints -->
+  <link rel="preload" as="image" href="./assets/doors/1.png" fetchpriority="high">
+  <link rel="preload" as="image" href="./assets/doors/safed-baradari-hall.jpg">
+  <link rel="preload" as="video" href="./assets/doors/1.mp4" type="video/mp4">
+  
+  <!-- YouTube Iframe API for background music playback -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script type="module" src="./main.js"></script>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body class="client-mode">
+  <!-- Ambient Desktop Background -->
+  <div class="ambient-backdrop" id="ambientBackdrop"></div>
+
+  <!-- Background YouTube Music Player Container & Local Audio Element -->
+  <div id="youtubePlayerContainer" class="youtube-player-container" data-youtube-url="https://www.youtube.com/watch?v=kYJjZ3L1Y9A"></div>
+  <audio id="localBgmAudio" src="./assets/audio/bgm_30s.mp3" loop preload="auto"></audio>
+
+  <!-- Top Floating Controls -->
+  <header class="top-controls">
+    <div class="brand-tag">
+      <span class="sparkle">✦</span> InviteStory Studio
+    </div>
+    <div class="action-pills">
+      <button id="audioToggleBtn" class="glass-pill-btn icon-only" title="Toggle Sound">
+        <svg id="audioIconOn" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+        <svg id="audioIconOff" class="hidden" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main 9:16 Vertical Invitation Container -->
+  <main class="invitation-wrapper">
+    <div class="invitation-card-container" id="invitationContainer">
+      
+      <!-- Video & Image Layers (Pure Architecture) -->
+      <div class="media-stage" id="mediaStage">
+        <!-- Venue Interior Hall Reveal Backdrop (Safed Baradari) -->
+        <img id="venueHallImg" src="./assets/doors/safed-baradari-hall.jpg" alt="Safed Baradari Hall" class="door-media venue-hall-image active" decoding="async">
+
+        <!-- Video Layer for physical opening animation -->
+        <video id="doorVideo" src="./assets/doors/1.mp4" class="door-media video-player" playsinline="" webkit-playsinline="" preload="auto" muted="">
+          <source id="videoSource" src="./assets/doors/1.mp4" type="video/mp4">
+        </video>
+
+        <!-- Ornate Mughal Double Door Cover (Sarah's Selected Door) -->
+        <img id="doorPoster" src="./assets/doors/1.png" alt="Royal Mughal Architectural Door" class="door-media poster-image active" decoding="async" fetchpriority="high">
+        
+        <!-- Freeze Frame Canvas for static hold at video completion -->
+        <canvas id="staticFrameCanvas" class="door-media static-canvas"></canvas>
+
+        <!-- Ambient Dust / Light Particle Overlay -->
+        <div class="light-dust-particles" id="dustParticles"></div>
+
+        <!-- 3D Depth Floating Sky Lanterns Overlay -->
+        <div class="floating-lanterns-container" id="lanternsContainer"></div>
+
+        <!-- Tap-To-Open Callout -->
+        <div class="tap-to-open-overlay" id="tapOverlay">
+          <div class="keyhole-pulse">
+            <div class="ring-pulse"></div>
+            <div class="keyhole-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="10" r="3"></circle><path d="M12 13v5M9.5 21h5"></path></svg>
+            </div>
+          </div>
+          <span class="tap-text">TAP TO OPEN</span>
+          <span class="sub-tap-text">An Invitation Awaits</span>
+        </div>
+      </div>
+
+      <!-- Wedding Content Overlay (Reveals AFTER door opens) -->
+      <div class="invitation-overlay hidden" id="invitationOverlay">
+        
+        <!-- Celebration Confetti Particle Layer -->
+        <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+
+        <div class="content-scrollable" id="contentScrollable">
+          
+          <!-- Invocation / Header Symbol -->
+          <div class="invitation-header animate-element" style="--delay: 0.1s;">
+            <div class="header-calligraphy arabic-calligraphy" id="displayBismillah">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</div>
+            <div class="header-sub-calligraphy">In the Name of Allah, the Most Gracious, the Most Merciful</div>
+            <div class="header-divider">
+              <span class="line"></span>
+              <span class="diamond">✦</span>
+              <span class="line"></span>
+            </div>
+          </div>
+
+          <!-- Families & Greeting -->
+          <p class="greeting-text animate-element" style="--delay: 0.2s;" id="displayGreeting">TOGETHER WITH THEIR FAMILIES</p>
+
+          <!-- Bride & Groom Names (Sarah requested bride's name first) -->
+          <div class="couple-names-block animate-element" style="--delay: 0.35s;">
+            <h1 class="bride-name" id="displayBride">Sarah Samia</h1>
+            <div class="ampersand-wrapper">
+              <span class="ampersand">&amp;</span>
+            </div>
+            <h1 class="groom-name" id="displayGroom">Shadaat Hanif</h1>
+          </div>
+
+          <!-- Announcement -->
+          <p class="invitation-tagline animate-element" style="--delay: 0.5s;" id="displayTagline">
+            REQUEST THE HONOUR OF YOUR PRESENCE AT THE CELEBRATION OF THEIR WEDDING
+          </p>
+
+          <div class="gold-separator animate-element" style="--delay: 0.6s;"></div>
+
+          <!-- Interactive Scratch-to-Reveal Date Card -->
+          <div class="scratch-card-wrapper animate-element" style="--delay: 0.7s;">
+            <div class="scratch-card-container" id="scratchContainer">
+              <!-- Underneath Date Card -->
+              <div class="date-time-card" id="dateTimeCard">
+                <div class="date-day" id="displayDay">MONDAY</div>
+                <div class="date-main">
+                  <span class="date-month" id="displayMonth">NOVEMBER</span>
+                  <span class="date-num" id="displayDateNum">30</span>
+                  <span class="date-year" id="displayYear">2026</span>
+                </div>
+                <div class="date-time" id="displayTime">8:00 PM ONWARDS</div>
+              </div>
+              
+              <!-- Gold Scratch Foil Canvas -->
+              <canvas id="scratchCanvas" class="scratch-canvas"></canvas>
+              
+              <!-- Scratch Hint Badge -->
+              <div class="scratch-hint-badge" id="scratchHint">
+                <span class="sparkle-icon">✨</span>
+                <span>Scratch foil to reveal date</span>
+              </div>
+            </div>
+
+            <button id="quickRevealBtn" class="quick-reveal-btn">
+              <span>Quick Reveal Date ✨</span>
+            </button>
+          </div>
+
+          <!-- Live Countdown Row -->
+          <div class="countdown-section animate-element" style="--delay: 0.8s;">
+            <div class="countdown-grid" id="countdownGrid">
+              <div class="countdown-pill">
+                <span class="countdown-num" id="cdDays">00</span>
+                <span class="countdown-unit">DAYS</span>
+              </div>
+              <div class="countdown-pill">
+                <span class="countdown-num" id="cdHours">00</span>
+                <span class="countdown-unit">HOURS</span>
+              </div>
+              <div class="countdown-pill">
+                <span class="countdown-num" id="cdMins">00</span>
+                <span class="countdown-unit">MINS</span>
+              </div>
+              <div class="countdown-pill">
+                <span class="countdown-num" id="cdSecs">00</span>
+                <span class="countdown-unit">SECS</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Venue & Location Block -->
+          <div class="venue-block animate-element" style="--delay: 0.9s;">
+            <h3 class="venue-name" id="displayVenue">Safed Baradari</h3>
+            <p class="venue-location" id="displayLocation">Qaisar Bagh, Lucknow, Uttar Pradesh</p>
+            <div class="scroll-indicator-pill">
+              <span>Scroll to View Itinerary &amp; Map</span>
+              <span>↓</span>
+            </div>
+          </div>
+
+          <!-- Event Itinerary Timeline Section -->
+          <div class="itinerary-section animate-element" style="--delay: 1.0s;">
+            <div class="section-title">WEDDING ITINERARY</div>
+            <div class="timeline-wrapper">
+              <div class="timeline-item">
+                <div class="timeline-time">8:00 PM</div>
+                <div class="timeline-dot">✦</div>
+                <div class="timeline-content">
+                  <h4>Baraat &amp; Istiqbaal</h4>
+                  <p>Grand welcome of the Baraat &amp; celebratory arrival</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-time">9:00 PM</div>
+                <div class="timeline-dot">✦</div>
+                <div class="timeline-content">
+                  <h4>Nikah Ceremony</h4>
+                  <p>Solemnization of marriage &amp; auspicious Dua</p>
+                </div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-time">10:00 PM</div>
+                <div class="timeline-dot">✦</div>
+                <div class="timeline-content">
+                  <h4>Royal Dastarkhwan</h4>
+                  <p>Traditional feast &amp; felicitations</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Verse / Quote Section -->
+          <div class="quote-section animate-element" style="--delay: 1.1s;">
+            <p class="story-quote">
+              “And among His signs is that He created for you mates from among yourselves, that you may dwell in peace and tranquility with them, and He has put love and mercy between your hearts.”
+            </p>
+            <span class="story-ref">— Surah Ar-Rum [30:21]</span>
+          </div>
+
+          <!-- Dress Code Badge -->
+          <div class="dress-code-badge animate-element" style="--delay: 1.15s;">
+            <span class="badge-icon">👑</span>
+            <span id="displayDressCode">Royal Traditional (Gold &amp; White)</span>
+          </div>
+
+          <!-- Action Buttons Grid -->
+          <div class="action-buttons-grid animate-element" style="--delay: 1.2s;">
+            <button class="primary-gold-btn" id="addToCalendarBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              <span>Add to Calendar</span>
+            </button>
+
+            <button class="secondary-glass-btn" id="openMapBtn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              <span>Location</span>
+            </button>
+          </div>
+
+          <!-- Replay Footer -->
+          <div class="invitation-footer animate-element" style="--delay: 1.25s;">
+            <button id="replayBtn" class="text-link-btn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"></path><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path></svg>
+              Replay Door Opening
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Venue Location Map Modal -->
+  <div class="modal-backdrop hidden" id="mapModal">
+    <div class="modal-card map-card">
+      <div class="modal-header">
+        <h2>Venue Location</h2>
+        <button class="close-modal-btn" id="closeMapModal">×</button>
+      </div>
+      <div class="map-body">
+        <div class="location-details">
+          <h3 id="mapVenueTitle">Safed Baradari, Lucknow</h3>
+          <p id="mapVenueAddress">Qaisar Bagh, Lucknow, Uttar Pradesh 226001</p>
+        </div>
+        <div class="venue-image-preview">
+          <img src="./assets/doors/safed-baradari-hall.jpg" alt="Safed Baradari Interior Hall" class="venue-modal-img">
+        </div>
+        <a href="https://maps.app.goo.gl/U6xvzYyqiAwADAVKA?g_st=ic" target="_blank" rel="noopener noreferrer" class="primary-gold-btn full-width text-center" id="googleMapsLink">
+          Open in Google Maps ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
