@@ -103,33 +103,36 @@ function openDoorInvitation(e) {
   if (doorVideo) {
     if (!doorVideo.src || doorVideo.src.endsWith('/')) {
       doorVideo.src = './assets/doors/1.mp4';
-      doorVideo.load();
     }
     
     // Ensure video is ready to render and elevate above poster
     doorVideo.currentTime = 0;
-    doorVideo.muted = isAudioMuted;
+    doorVideo.muted = true; // Video track is visually driven; audio is handled by localBgmAudio
     doorVideo.classList.add('playing');
 
+    let posterHidden = false;
     const hidePoster = () => {
-      if (doorPoster) doorPoster.classList.add('fade-out');
+      if (!posterHidden && doorPoster) {
+        posterHidden = true;
+        doorPoster.classList.add('fade-out');
+      }
     };
 
     doorVideo.addEventListener('playing', hidePoster, { once: true });
     doorVideo.addEventListener('timeupdate', () => {
       if (doorVideo.currentTime > 0.04) hidePoster();
-    }, { once: true });
+    });
 
     const playPromise = doorVideo.play();
     if (playPromise !== undefined) {
       playPromise.then(() => {
         console.log('[Video] Door video playing successfully.');
-        hidePoster();
+        setTimeout(hidePoster, 200);
       }).catch(err => {
-        console.warn('[Video] Play unmuted blocked by browser policy, retrying muted:', err);
+        console.warn('[Video] Play unmuted blocked or pending, retrying muted:', err);
         doorVideo.muted = true;
         doorVideo.play().then(() => {
-          hidePoster();
+          setTimeout(hidePoster, 150);
         }).catch(err2 => {
           console.error('[Video] Play failed, falling back to image reveal:', err2);
           triggerImageTransition();
@@ -238,12 +241,22 @@ function launchFloatingLanterns() {
   }
 }
 
-// Bind clicks on doorPoster, tapOverlay, mediaStage, and doorVideo
+// Bind clicks on doorPoster, tapOverlay, mediaStage, doorVideo, and card container
 const mediaStage = document.getElementById('mediaStage');
-[tapOverlay, doorPoster, mediaStage, doorVideo].forEach(el => {
+const invitationCard = document.getElementById('invitationContainer');
+
+let lastTapTimestamp = 0;
+function handleTapToOpen(e) {
+  const now = Date.now();
+  if (now - lastTapTimestamp < 300) return;
+  lastTapTimestamp = now;
+  openDoorInvitation(e);
+}
+
+[tapOverlay, doorPoster, mediaStage, doorVideo, invitationCard].forEach(el => {
   if (el) {
-    el.addEventListener('click', openDoorInvitation);
-    el.addEventListener('touchstart', openDoorInvitation, { passive: true });
+    el.addEventListener('click', handleTapToOpen);
+    el.addEventListener('pointerup', handleTapToOpen);
   }
 });
 

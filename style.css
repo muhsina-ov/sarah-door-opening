@@ -40,13 +40,12 @@
   object-fit: cover;
   object-position: center;
   z-index: 2;
-  transition: opacity 1.2s cubic-bezier(0.25, 1, 0.5, 1), transform 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+  transition: opacity 0.35s ease;
 }
 
 .poster-image.fade-out {
-  opacity: 0;
-  transform: scale(1.08);
-  pointer-events: none;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 .venue-image-preview {
