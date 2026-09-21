@@ -165,12 +165,15 @@ if (doorVideo) {
   doorVideo.addEventListener('timeupdate', () => {
     if (!isPlaying) return;
     const dur = doorVideo.duration || 7.0;
-    if (doorVideo.currentTime >= Math.max(1, dur - 2.5)) {
+
+    // Launch floating lanterns softly around 5.5s as couple twirls
+    if (doorVideo.currentTime >= 5.5) {
       launchFloatingLanterns();
     }
-    // Reveal invitation 1 second before the video ends, so content
-    // starts fading in while the open venue is still on screen.
-    if (!hasOpened && doorVideo.currentTime >= Math.max(2, dur - 1.0)) {
+
+    // The video plays till the 7th second and then reveals details
+    if (!hasOpened && doorVideo.currentTime >= Math.max(6.8, dur - 0.2)) {
+      freezeFinalFrame();
       revealInvitationContent();
     }
   });
