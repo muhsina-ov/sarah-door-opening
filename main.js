@@ -169,7 +169,7 @@ if (doorVideo) {
     if (!isPlaying) return;
     const dur = doorVideo.duration || 8.0;
 
-    // Launch floating lanterns softly around 6.0s as couple moves forward down the hall
+    // Launch floating lanterns softly around 6.0s as camera glides into the venue hall
     if (doorVideo.currentTime >= 6.0) {
       launchFloatingLanterns();
     }
