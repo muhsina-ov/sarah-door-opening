@@ -167,15 +167,15 @@ function scheduleRevealWithVenueHold() {
 if (doorVideo) {
   doorVideo.addEventListener('timeupdate', () => {
     if (!isPlaying) return;
-    const dur = doorVideo.duration || 7.0;
+    const dur = doorVideo.duration || 8.0;
 
-    // Launch floating lanterns softly around 5.5s as couple twirls
-    if (doorVideo.currentTime >= 5.5) {
+    // Launch floating lanterns softly around 6.0s as couple moves forward down the hall
+    if (doorVideo.currentTime >= 6.0) {
       launchFloatingLanterns();
     }
 
-    // The video plays till the 7th second and then reveals details
-    if (!hasOpened && doorVideo.currentTime >= Math.max(6.8, dur - 0.2)) {
+    // The video plays through the 8th second and then smoothly reveals invitation details
+    if (!hasOpened && doorVideo.currentTime >= Math.max(7.7, dur - 0.25)) {
       freezeFinalFrame();
       revealInvitationContent();
     }
